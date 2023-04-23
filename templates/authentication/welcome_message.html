@@ -1,0 +1,46 @@
+{%load static%}
+{% block welcome_message %}
+<div class="w-100">
+    <div class="d-flex justify-content-center">
+        <lottie-player src="{% static 'json/49755-blue-chat-animation-from-drawkit.json' %}"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>
+    </div>
+    <div class="d-flex h-100 flex-column">
+        <div class="p-4 mt-auto">
+            <div class="row justify-content-center">
+                
+                <div class="col-lg-7">
+                    <div class="text-center">
+                        
+                        <h4 class="mb-3"><i class="bx bxs-quote-alt-left text-primary h1 align-middle me-3"></i><span class="text-primary">Django</span> Realtime Chat App</h4>
+
+                        
+                            <button type="button" class="btn btn-lg btn-outline-primary waves-effect waves-light">
+                                <i class="bx bx-file font-size-16 align-middle me-2"></i> Read Project Details
+                            </button>
+                            
+                            <a href="https://github.com/yusuf335" target="blank" type="button" class="btn btn-lg btn-dark waves-effect waves-light">
+                                <i class="bx bxl-github font-size-16 align-middle me-2"></i> GitHub
+                            </a>
+                        
+                        <div dir="ltr">
+                            
+                            <div class="owl-carousel owl-theme auth-review-carousel" id="auth-review-carousel">
+                                <div class="item">
+                                    <div class="py-3">
+                                        <p class="font-size-16 mb-4">" I am excited to share with you one of my personal projects that I've been working on to enhance my web application development skills. The best part is that this project is open source, meaning anyone can use it! You can find the complete source code for this project on my GitHub repository. It has been a fantastic learning experience for me, and I hope that others find it helpful and informative as well. "
+                                        </p>
+                                        <div>
+                                            <h4 class="font-size-16 text-primary">Mohammad Yusuf Been Hashem</h4>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock welcome_message %}

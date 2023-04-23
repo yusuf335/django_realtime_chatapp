@@ -1,0 +1,130 @@
+{% load static %} {% block sidebar %}
+    <!-- ========== Left Sidebar Start ========== -->
+<div class="chat-leftsidebar me-lg-4">
+    <div>
+        <div class="py-4 border-bottom">
+            <div class="d-flex">
+                <div class="flex-shrink-0 align-self-center me-3">
+                    <img src="{% static 'images/users/avatar-1.jpg'%}" class="avatar-xs rounded-circle" alt="">
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="font-size-15 mb-1">{{user.name}}</h5>
+                    <p class="text-muted mb-0">User ID: {{user.id}}</p>
+                </div>
+                
+                <div>
+                    <div class="dropdown profile-settings-dropdown active">
+                        <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
+                        {% comment %} <a class="dropdown-item" href="{% url 'profile' %}">Profile</a> {% endcomment %}
+                        <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-leftsidebar-nav">
+            <ul class="nav nav-pills nav-justified">
+                <li class="nav-item">
+                    <a href="#chat" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+                        <i class="bx bx-chat font-size-20 d-sm-none"></i>
+                        <span class="d-none d-sm-block">Chat</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#groups" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                        <i class="bx bx-group font-size-20 d-sm-none"></i>
+                        <span class="d-none d-sm-block">Groups</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contacts" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                        <i class="bx bx-group font-size-20 d-sm-none"></i>
+                        <span class="d-none d-sm-block">Contacts</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="pt-3 d-grid">
+                {% comment %} <a type="button" class="btn btn-success btn-m waves-effect waves-light" href="{% url 'profile' %}">
+                    <i class="bx bx-book-bookmark font-size-16 align-middle me-2"></i>My Contacts
+                </a> {% endcomment %}
+            </div>
+
+
+            <div class="tab-content py-4">
+                <div class="tab-pane show active" id="chat">
+                    <div>
+                        <h5 class="font-size-14 mb-3">Recent</h5>
+                        <ul class="list-unstyled chat-list" data-simplebar style="max-height: 410px;">
+                            <li class="active">
+                                <a href="javascript: void(0);">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 align-self-center me-3">
+                                            <img src="{% static 'images/users/avatar-2.jpg'%}" class="rounded-circle avatar-xs" alt="">
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <h5 class="text-truncate font-size-14 mb-1">Steven Franklin</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="groups">
+                    <h5 class="font-size-14 mb-3">Groups</h5>
+                    <ul class="list-unstyled chat-list" data-simplebar style="max-height: 410px;">
+                        <li>
+                            <a href="javascript: void(0);">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar-xs">
+                                            <span class="avatar-title rounded-circle bg-primary bg-soft text-primary">
+                                                G
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex-grow-1">
+                                        <h5 class="font-size-14 mb-0">General</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-pane" id="contacts">
+                    <h5 class="font-size-14 mb-3">Contacts</h5>
+                    <ul class="list-unstyled chat-list" data-simplebar style="max-height: 410px;">
+                        <li>
+                            <a href="javascript: void(0);">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar-xs">
+                                            <span class="avatar-title rounded-circle bg-primary bg-soft text-primary">
+                                                G
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex-grow-1">
+                                        <h5 class="font-size-14 mb-0">General</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Left Sidebar End -->
+{% endblock %}
+

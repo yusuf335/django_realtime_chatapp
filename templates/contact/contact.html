@@ -1,0 +1,132 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block contents %}
+
+<div class="d-lg-flex">
+    <div class="chat-leftsidebar me-lg-4">
+        <div>
+            <div class="py-4 border-bottom">
+                <div class="d-flex">
+                    <div class="flex-shrink-0 align-self-center me-3">
+                        <img src="{% static 'images/users/avatar-1.jpg'%}" class="avatar-xs rounded-circle" alt="">
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="font-size-15 mb-1">{{user.name}}</h5>
+                        <p class="text-muted mb-0">User ID: {{user.id}}</p>
+                        {% if status == 'active' %}
+                            <p class="text-muted mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i>Online</p>
+                        {% else %}
+                            <p class="text-muted mb-0"><i class="mdi mdi-circle align-middle me-1"></i>Offline</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <div class="dropdown profile-settings-dropdown active">
+                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                            <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>Log Out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="chat-leftsidebar-nav">
+                <ul class="nav nav-pills nav-justified">
+                    <li class="nav-item">
+                        <a href="#chat" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+                            <i class="bx bx-chat font-size-20 d-sm-none"></i>
+                            <span class="d-none d-sm-block">Chat</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#groups" id='group-button' data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <i class="bx bx-group font-size-20 d-sm-none"></i>
+                            <span class="d-none d-sm-block">Groups</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'contact' %}" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <i class="bx bx-book-content font-size-20 d-sm-none"></i>
+                            <span class="d-none d-sm-block">Contacts</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content py-4">
+                    <div class="tab-pane show active" id="contacts">
+                        <h5 class="font-size-14 mb-3">Contacts</h5>
+    
+                        <div  data-simplebar style="max-height: 410px;">
+                            <ul class="list-unstyled chat-list">
+                                {% for x in contact %}
+                                    <li>
+                                        <a href="javascript: void(0);">
+                                            <h5 class="font-size-14 mb-0">{{x.contact}}</h5>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 user-chat">
+        <div class="card">
+            <div class="w-100">
+                <div class="d-flex justify-content-center">
+                    <lottie-player src="{% static 'json/75484-networkfriends.json' %}"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>
+                </div>
+                <div class="d-flex h-100 flex-column">
+                    <div class="p-4 mt-auto">
+                        <div class="row justify-content-center">
+                            
+                            <div class="col-lg-7">
+                                <div class="text-center">
+                                    
+                                    <h4 class="mb-3"><i class="bx bxs-quote-alt-left text-primary h1 align-middle me-3"></i><span class="text-primary">Find</span> Contact</h4>
+                                    
+                                    <div dir="ltr">
+                                        <div class="search-box chat-search-box py-4">
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control border-2" placeholder="Search...">
+                                                <i class="bx bx-search-alt search-icon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="owl-carousel owl-theme auth-review-carousel" id="auth-review-carousel">
+                                            <div class="item">
+                                                <div class="py-3">
+                                                    <p class="font-size-16 mb-4">" I am excited to share with you one of my personal projects that I've been working on to enhance my web application development skills. The best part is that this project is open source, meaning anyone can use it! You can find the complete source code for this project on my GitHub repository. It has been a fantastic learning experience for me, and I hope that others find it helpful and informative as well. "
+                                                    </p>
+                                                    <div>
+                                                        <h4 class="font-size-16 text-primary">Mohammad Yusuf Been Hashem</h4>
+                                                        <p class="font-size-14 mb-0"><a href="https://github.com/yusuf335" target="blank">- GitHub</a></p>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+
+    <!-- dashboard init -->
+    <script src="{% static 'js/pages/dashboard.init.js' %}"></script>
+
+{% endblock %}

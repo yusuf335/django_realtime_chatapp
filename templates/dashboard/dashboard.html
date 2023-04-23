@@ -1,0 +1,18 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block contents %}
+
+<div class="d-lg-flex">
+    {% block sidebar %}
+        {% include 'sidebar/sidebar.html' %}
+    {% endblock sidebar %}
+
+    {% block dynamic_contents %}
+        {% include 'dashboard/dashboard_welcome.html' %}
+    {% endblock dynamic_contents %}
+
+</div>
+<!-- end row -->
+{% endblock %}
+
+
