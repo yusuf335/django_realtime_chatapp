@@ -5,7 +5,7 @@ def user_context(request):
 
    try:
       return {
-         'user': request.user,
+         'sidebar_user_details': request.user,
     }
 
    except Exception as e:

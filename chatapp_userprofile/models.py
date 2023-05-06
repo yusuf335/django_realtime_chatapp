@@ -68,27 +68,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.name
     
 
-# class Contacts(models.Model):
-#     class STATUS(models.TextChoices):
-#         PENDING = 'P', 'Pending'
-#         APPROVED = 'A', 'Approved'
-#         BLOCKED = 'B', 'Blocked'
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     contact = models.OneToOneField(User, on_delete=models.CASCADE, related_name='contact')
-#     status = models.CharField(choices=STATUS.choices, max_length=1, default=STATUS.PENDING)
+class Contacts(models.Model):
+    class STATUS(models.TextChoices):
+        PENDING = 'P', 'Pending'
+        APPROVED = 'A', 'Approved'
+        BLOCKED = 'B', 'Blocked'
+    user1 = models.ForeignKey(User, on_delete=models.CASCADE)
+    user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contact')
+    room_id = models.UUIDField(default=uuid.uuid4, editable=False)
+    user1_status = models.CharField(choices=STATUS.choices, max_length=1, default=STATUS.PENDING)
+    user2_status = models.CharField(choices=STATUS.choices, max_length=1, default=STATUS.PENDING)
 
-#     class Meta:
-#         db_table = 'user_contacts'
+    class Meta:
+        db_table = 'user_contacts'
 
-
-# class ChatRoom(models.Model):
-#     class STATUS(models.TextChoices):
-#         ACTIVE = 'A', 'Active'
-#         BLOCKED = 'B', 'Blocked'
-
-#     room_id = models.UUIDField(default= uuid.uuid4)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     status = models.CharField(choices=STATUS.choices, max_length=1, default=STATUS.ACTIVE)
-
-#     class Meta:
-#         db_table = 'chat_room'

@@ -1,6 +1,11 @@
 {% load static %}
 {% block javascript %}
         <!-- JAVASCRIPT -->
+        <script>
+                if ( window.history.replaceState ) {
+                    window.history.replaceState( null, null, window.location.href );
+                }
+        </script>
         <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
         <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'libs/metismenu/dist/metisMenu.min.js' %}"></script>

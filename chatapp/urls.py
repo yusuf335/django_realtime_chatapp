@@ -38,5 +38,11 @@ urlpatterns = [
 
     # Dashboards View
     path('dashboard/',include('chatapp_dashboard.urls'), name='dashboard'), 
+
+    # User Profile View
+    path('profile/', include('chatapp_userprofile.urls'), name='user_profile'),
+
+    # Chatroom View
+    path('chatroom/', include('chatapp_chatroom.urls'), name="user_chatroom")
 ]
 

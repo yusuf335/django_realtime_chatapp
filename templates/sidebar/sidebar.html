@@ -8,20 +8,29 @@
                     <img src="{% static 'images/users/avatar-1.jpg'%}" class="avatar-xs rounded-circle" alt="">
                 </div>
                 <div class="flex-grow-1">
-                    <h5 class="font-size-15 mb-1">{{user.name}}</h5>
-                    <p class="text-muted mb-0">User ID: {{user.id}}</p>
+                    <h5 class="font-size-15 mb-1">{{sidebar_user_details.name}}</h5>
+                    <p class="text-muted mb-0">User ID: {{sidebar_user_details.id}}</p>
                 </div>
                 
                 <div>
-                    <div class="dropdown profile-settings-dropdown active">
-                        <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
-                        {% comment %} <a class="dropdown-item" href="{% url 'profile' %}">Profile</a> {% endcomment %}
-                        <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>Log Out</a>
-                        </div>
+                    <div class="col-md-8 col-3">
+                        <ul class="list-inline user-chat-nav text-end mb-0">
+                            <li class="list-inline-item">
+                                <div class="dropdown">
+                                    <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item" href="{% url 'user' %}"><i class="bx bx-user font-size-16 align-middle me-1"></i>Profile</a>
+
+                                        <a class="dropdown-item" href="{% url 'dashboard' %}"><i class="bx bx-user-plus font-size-16 align-middle me-1"></i>Add New Contact</a>
+
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>Log Out</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -35,12 +44,7 @@
                         <span class="d-none d-sm-block">Chat</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#groups" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
-                        <i class="bx bx-group font-size-20 d-sm-none"></i>
-                        <span class="d-none d-sm-block">Groups</span>
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a href="#contacts" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
                         <i class="bx bx-group font-size-20 d-sm-none"></i>
@@ -76,31 +80,19 @@
                     </div>
                 </div>
 
-                <div class="tab-pane" id="groups">
-                    <h5 class="font-size-14 mb-3">Groups</h5>
-                    <ul class="list-unstyled chat-list" data-simplebar style="max-height: 410px;">
-                        <li>
-                            <a href="javascript: void(0);">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0 me-3">
-                                        <div class="avatar-xs">
-                                            <span class="avatar-title rounded-circle bg-primary bg-soft text-primary">
-                                                G
-                                            </span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex-grow-1">
-                                        <h5 class="font-size-14 mb-0">General</h5>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
                 <div class="tab-pane" id="contacts">
-                    <h5 class="font-size-14 mb-3">Contacts</h5>
+
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <h5 class="font-size-14 mb-3">Contacts</h5>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-sm-end">
+                                <a href="{% url 'dashboard' %}" type="button" class="btn btn-info btn-sm btn-rounded waves-effect waves-light addContact-modal mb-2"><i class="bx bx-user-plus me-1"></i> New Contact</a>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <ul class="list-unstyled chat-list" data-simplebar style="max-height: 410px;">
                         <li>
                             <a href="javascript: void(0);">

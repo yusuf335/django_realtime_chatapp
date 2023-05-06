@@ -1,4 +1,3 @@
-from decouple import config
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -6,9 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail, EmailMessage
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.html import strip_tags
 from django.template.loader import render_to_string
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpRequest
 
 from .forms import LoginForm, RegistrationForm ,ResetPasswordForm
 from chatapp_userprofile.models import User
@@ -21,7 +19,7 @@ def show_error(request, message):
     login_form = LoginForm()
 
     if message == "not_verified":
-        message = 'Your account is not verified!'
+        message = f"Your account is not verified! Please check spam folder for the activation email or click the button below to receive the activation link at {request.POST.get('email')}" 
         resend_email = True
         
     context = {
@@ -83,10 +81,10 @@ def login_view(request):
                     'token': default_token_generator.make_token(user_info),
                 })
                 to_email = user_info.email
-                print(to_email)
                 email = EmailMessage(
                     mail_subject, message, to=[to_email]
                 )
+                email.content_subtype = 'html'
                 email.send()
                 return show_error(request, message=None)
             except:
@@ -116,6 +114,7 @@ def signup(request):
             email = EmailMessage(
                 mail_subject, message, to=[to_email]
             )
+            email.content_subtype = 'html'
             email.send()
             return redirect('login')
     else:
@@ -148,6 +147,6 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return render(request, 'authentication/account_activated.html')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return render(request, 'authentication/invalid_activation_link.html')

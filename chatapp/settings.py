@@ -43,6 +43,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -91,6 +92,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'chatapp.wsgi.application'
+ASGI_APPLICATION = 'chatapp.asgi.application'
 
 
 # Database
@@ -104,6 +106,9 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
         'PORT': config('DB_PORT'),
+        "OPTION": {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1",
+        }
     }
 }
 
@@ -178,6 +183,7 @@ AUTH_USER_MODEL = 'chatapp_userprofile.User'
 HASHID_FIELD_SALT = config('HASH_ID_SALT')
 HASHID_FIELD_MIN_LENGTH = 6
 HASHID_FIELD_ALLOW_INT_LOOKUP = True
+HASHID_FIELD_ENABLE_HASHID_OBJECT = False
 
 
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
