@@ -5,7 +5,11 @@
         <div class="py-4 border-bottom">
             <div class="d-flex">
                 <div class="flex-shrink-0 align-self-center me-3">
-                    <img src="{% static 'images/users/avatar-1.jpg'%}" class="avatar-xs rounded-circle" alt="">
+                    <div class="avatar-sm mx-auto mb-4">
+                        <span class="avatar-title rounded-circle bg-primary bg-soft font-size-24">
+                                <p class="pt-3 text-dark">{{sidebar_user_details.name|slice:":1"}}</p>
+                        </span>
+                    </div>
                 </div>
                 <div class="flex-grow-1">
                     <h5 class="font-size-15 mb-1">{{sidebar_user_details.name}}</h5>
