@@ -29,7 +29,7 @@ def show_error(request, message):
     }
 
     return render(request,"authentication/login.html",context)
-    # return render(request,"email/confirmation_link.html",context)
+    
 
 #Login 
 def login_view(request):
@@ -38,7 +38,7 @@ def login_view(request):
     # If authenticated then redirect to dashboard
         return redirect('dashboard')
     else:
-        # Check is the request method is POST
+        # Check is the request method is POST and the button is login
         if 'login' in request.POST:
             # Try to get the user submitted in the login form
             try:
@@ -66,6 +66,9 @@ def login_view(request):
                         return show_error(request, message="Incorrect email or password!")
             else:
                 return show_error(request, message="Please check the reCaptcha box!")
+        # Check is the request method is POST and the button is login
+        # Usually user will receive and message in the login page their account is not verified
+        # They can request verification link by email
         elif 'email_resend' in request.POST:
             try:
                 user_info = User.objects.get(email=request.POST.get('email'))
@@ -97,12 +100,17 @@ def login_view(request):
 def signup(request):
 
     message = None
+    # # Check is the request method is POST
     if request.method == 'POST':
         registration_form = RegistrationForm(request.POST)
         if registration_form.is_valid():
             user = registration_form.save(commit=False)
             user.is_active = False
+
+            # If user input is valid save user
             user.save()
+
+            # Send verification email to user
             mail_subject = 'Activate your account.'
             message = render_to_string('email/confirmation_link.html', {
                 'user': user,
@@ -128,7 +136,7 @@ def signup(request):
     return render(request, 'authentication/signup.html', context)
 
 
-
+# Logout
 def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
@@ -137,7 +145,7 @@ def logout_view(request):
     else:
         return redirect('login')
     
-
+# Check the verification link is valid or not and verify the account
 def activate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()

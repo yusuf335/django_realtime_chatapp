@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from hashid_field import HashidAutoField
 
 
-
+# Custom user model
 class CustomAccountManager(BaseUserManager):
 
     def create_superuser(self, email, name, password, **other_fields):
@@ -53,6 +53,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.name
     
 
+
+# User contact model 
 class Contacts(models.Model):
     class STATUS(models.TextChoices):
         PENDING = 'P', 'Pending'

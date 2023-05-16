@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from chatapp_userprofile.models import User
 from captcha.fields import ReCaptchaField
 
-
+# login form with captcha feild
 class LoginForm(forms.ModelForm):
     captcha = ReCaptchaField()
     class Meta:
@@ -14,6 +14,7 @@ class LoginForm(forms.ModelForm):
             'password': forms.TextInput(attrs={'class':'form-control', 'type': 'password','required': 'True'}),
         }
 
+# Registration Form
 class RegistrationForm(UserCreationForm):
     captcha = ReCaptchaField()
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control', 'type': 'password','required': 'True'}))
@@ -27,7 +28,7 @@ class RegistrationForm(UserCreationForm):
         }
 
 
-
+# Reset password form
 class ResetPasswordForm(forms.Form):
     captcha = ReCaptchaField()
     email = forms.CharField( widget = forms.TextInput(attrs={'class':'form-control', 'type': 'email'}))
