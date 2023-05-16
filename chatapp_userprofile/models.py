@@ -1,23 +1,9 @@
-import os
 import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from hashid_field import HashidAutoField
-
-from django.core.exceptions import ValidationError
-
-
-def validate_extension(value):
-    ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
-    valid_extensions = ['.jpg', '.jpeg', '.png']
-    if not ext.lower() in valid_extensions:
-        raise ValidationError('Unsupported file extension.')
-
-# Const value used in the model
-user_profile = 'user_profile/%Y/%m/'
-
 
 
 
@@ -50,7 +36,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=150)
     status = models.CharField(choices=STATUS.choices, max_length=1, default=STATUS.ACTIVE)
     status_updated = models.DateTimeField(auto_now_add=True, null=True)
-    image = models.FileField(upload_to=user_profile, blank=True, validators=[validate_extension ], null=True)
     start_date = models.DateTimeField(default=timezone.now)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
