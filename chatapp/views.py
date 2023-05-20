@@ -2,16 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMessage
+from django.contrib.auth.decorators import login_required
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.http import HttpRequest
-
 from .forms import LoginForm, RegistrationForm ,ResetPasswordForm
 from chatapp_userprofile.models import User
 
-UserModel = get_user_model()
 
 # Error Message on login Page
 def show_error(request, message):
@@ -19,7 +18,8 @@ def show_error(request, message):
     login_form = LoginForm()
 
     if message == "not_verified":
-        message = f"Your account is not verified! Please check spam folder for the activation email or click the button below to receive the activation link at {request.POST.get('email')}" 
+        message = f"""Your account is not verified! Please check spam folder for the activation email 
+        or click the button below to receive the activation link at {request.POST.get('email')}"""
         resend_email = True
         
     context = {
@@ -137,19 +137,19 @@ def signup(request):
 
 
 # Logout
+@login_required
 def logout_view(request):
-    if request.user.is_authenticated:
-        logout(request)
-        context = {}
-        return render(request,"authentication/logout-success.html", context)
-    else:
-        return redirect('login')
+    logout(request)
+    context = {}
+    return render(request,"authentication/logout-success.html", context)
     
+
 # Check the verification link is valid or not and verify the account
 def activate(request, uidb64, token):
+   
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
-        user = UserModel._default_manager.get(pk=uid)
+        user = get_user_model()._default_manager.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and default_token_generator.check_token(user, token):

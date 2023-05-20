@@ -112,6 +112,15 @@ DATABASES = {
     }
 }
 
+# Django Channel layer
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis://default:N5wK2N2eucGq7S30PyTAbY6TJ5UYKmdG@redis-11425.c12.us-east-1-4.ec2.cloud.redislabs.com:11425")],
+        },
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

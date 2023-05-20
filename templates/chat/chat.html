@@ -13,24 +13,27 @@
                 <div class="row">
                     <div class="d-flex">
                         <div class="flex-shrink-0 align-self-center me-3">
-                            <img src="{% static 'images/users/avatar-1.jpg'%}" class="avatar-xs rounded-circle" alt="">
+                            <div class="avatar-sm mx-auto mb-4">
+                                <span class="avatar-title rounded-circle bg-primary bg-soft font-size-24">
+                                        <p class="pt-3 text-dark">{{friend_id.name|slice:":1"}}</p>
+                                </span>
+                            </div>
                         </div>
                         <div class="flex-grow-1">
-                            <h5 class="font-size-15 mb-1">{{user.name}}</h5>
-                            <p class="text-muted mb-0">User ID: {{user.id}}</p>
+                            <h5 class="font-size-15 mb-1">{{friend_id.name}}</h5>
+                            <p class="text-muted mb-0">User ID: {{friend_id.id}}</p>
                         </div>
                         {% if is_contact %}
                             <div class="col-md-8 col-3">
                                 <ul class="list-inline user-chat-nav text-end mb-0">
                                     <li class="list-inline-item">
-                                        <div class="dropdown">
-                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="bx bx-dots-horizontal-rounded"></i>
+                                        <form method="POST" action="{% url 'chatroom' %}?friend_id={{friend_id.id}}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger waves-effect waves-light" name="block_user">
+                                                <i class="bx bx-block font-size-16 align-middle me-2"></i> 
+                                                Block
                                             </button>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Block</a>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </li>
                                 </ul>
                             </div>
@@ -42,8 +45,8 @@
 
             <div>
                 {% if is_contact %}
-                    <div class="chat-conversation p-3">
-                        <ul class="list-unstyled mb-0" data-simplebar style="max-height: 486px;">
+                    <div class="chat-conversation p-3"  style="max-height: 70vh;">
+                        <ul class="list-unstyled mb-0" data-simplebar  style="max-height: 65vh;">
                             <li>
                                 <div class="conversation-list">
                                     <div class="ctext-wrap">
@@ -84,7 +87,7 @@
                             <li class="right">
                                 <div class="conversation-list">
                                     <div class="ctext-wrap">
-                                        <div class="conversation-name">{{user.name}}</div>
+                                        <div class="conversation-name">{{friend_id.name}}</div>
                                         <p>
                                             Wow that's great
                                         </p>
@@ -100,18 +103,18 @@
                 {% else %}
                     
                     <div class="alert alert-secondary mb-0" role="alert">
-                        You and {{user.name}} are not connected yet send request to connect with {{user.name}}.
+                        You and {{friend_id.name}} are not connected yet send request to connect with {{friend_id.name}}.
                     </div>
                           
                     <div class="pt-3 d-flex justify-content-center">
                         <div class="d-flex flex-wrap gap-2">
-                            <form method="POST">
+                            <form method="POST" action="{% url 'chatroom' %}?friend_id={{friend_id.id}}">
                                 {% csrf_token %}
-                                <button type="button" class="btn btn-primary waves-effect waves-light">
+                                <button type="submit" class="btn btn-primary waves-effect waves-light" name="friend_request">
                                     <i class="bx bx-smile font-size-16 align-middle me-2"></i> Send Friend Request
                                 </button>
-                                <button type="button" class="btn btn-outline-danger waves-effect waves-light">
-                                    <i class="bx bx-block font-size-16 align-middle me-2"></i> Block {{user.name}}
+                                <button type="submit" class="btn btn-outline-danger waves-effect waves-light" name="block_user">
+                                    <i class="bx bx-block font-size-16 align-middle me-2"></i> Block {{friend_id.name}}
                                 </button>
                             </form>
                         </div>
@@ -129,11 +132,14 @@
                         <div class="row">
                             <div class="col">
                                 <div class="position-relative">
-                                    <input type="text" class="form-control chat-input" placeholder="Enter Message...">
+                                    <input id="chat-message-input" type="text" class="form-control chat-input" placeholder="Enter Message...">
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <button type="submit" class="btn btn-primary btn-rounded chat-send w-md waves-effect waves-light"><span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i></button>
+                                <button id="chat-message-submit" type="button" 
+                                class="btn btn-primary btn-rounded chat-send w-md waves-effect waves-light">
+                                    <span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -141,9 +147,49 @@
             </div>
         </div>
     </div>
-
 </div>
+{{ room_name|json_script:"room-name" }}
 <!-- end row -->
 {% endblock %}
 
+{% block extra_javascript %}
 
+<script>
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+    console.log(chatSocket)
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log(data)
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInputDom.value = '';
+    };
+
+</script>
+
+{% endblock %}
